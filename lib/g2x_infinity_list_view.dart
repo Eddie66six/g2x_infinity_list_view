@@ -14,7 +14,8 @@ class G2xInfinityListView extends StatefulWidget {
   final Function() onRefresh;
   final Function() loadMore;
   final Widget? emptyWidget;
-  const G2xInfinityListView({ Key? key, required this.controller, required this.onRefresh, required this.loadMore, this.emptyWidget }) : super(key: key);
+  final bool callOnRefreshOnInit;
+  const G2xInfinityListView({ Key? key, required this.controller, required this.onRefresh, required this.loadMore, this.emptyWidget, this.callOnRefreshOnInit = true }) : super(key: key);
   @override
   _G2xInfinityListViewState createState() => _G2xInfinityListViewState();
 }
@@ -29,6 +30,9 @@ class _G2xInfinityListViewState extends State<G2xInfinityListView> {
   @override
   void initState() {
     super.initState();
+    if(widget.callOnRefreshOnInit){
+      onRefresh();
+    }
     widget.controller.addListener(updateEmptyAndState);
     _scrollController..addListener(() async {
       var triggerFetchMoreSize = 0.9 * _scrollController.position.maxScrollExtent;
