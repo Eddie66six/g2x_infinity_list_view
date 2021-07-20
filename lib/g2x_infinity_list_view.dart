@@ -85,7 +85,7 @@ class _G2xInfinityListViewState extends State<G2xInfinityListView> {
         itemBuilder: (context, index) {
           if (index < widget.controller.value.length) {
             return widget.controller.value[index];
-          } else if(!loadingOnRefresh && (loading || index == widget.controller.value.length + 1)) {
+          } else if(!loadingOnRefresh && (loading && (index == widget.controller.value.length + 1 || widget.controller.value.length == 0))) {
             return Center(
               child: Container(
                 height: 20,
