@@ -77,11 +77,28 @@ class _G2xInfinityListViewState extends State<G2xInfinityListView> {
     await widget.onRefresh();
   }
 
+  Widget loadingWidget(){
+    return Center(
+      child: Container(
+        height: 20,
+        width: 20,
+        margin: EdgeInsets.only(bottom: 20, top: 20),
+        alignment: Alignment.topCenter,
+        child: 
+          CircularProgressIndicator(
+            backgroundColor: Colors.transparent,
+            valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)
+          )
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if(emptyWidget != null){
       return emptyWidget!;
     }
+    if(loadingOnRefresh) return loadingWidget();
     return RefreshIndicator(
       onRefresh: onRefresh,
       child: ListView.builder(
@@ -89,7 +106,7 @@ class _G2xInfinityListViewState extends State<G2xInfinityListView> {
         itemBuilder: (context, index) {
           if (index < widget.controller.value.length) {
             return widget.controller.value[index];
-          } else if(!loadingOnRefresh && (loading && (index == widget.controller.value.length + 1 || widget.controller.value.length == 0))) {
+          } else if(!loadingOnRefresh && (loading || index == widget.controller.value.length + 1)) {
             return Center(
               child: Container(
                 height: 20,
